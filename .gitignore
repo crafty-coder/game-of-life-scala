@@ -1,0 +1,8 @@
+target/
+project/
+.cache
+*.log
+.scala_dependencies
+.worksheet
+.idea/
+
