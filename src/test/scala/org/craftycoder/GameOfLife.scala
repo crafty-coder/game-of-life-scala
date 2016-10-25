@@ -12,6 +12,8 @@ class GameOfLife extends WordSpecLike with Matchers {
     case _ => false
   }
 
+  def isNeighbour(c1: Cell, c2: Cell): Any = false
+
   "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
       isAliveNextGen(numberOfNeighboursAlive = 0, cell = true) shouldBe false
@@ -48,6 +50,11 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
+  "A cell" should {
+    "not be neighbour of itself" in {
+      isNeighbour(c1 = true, c2 = true) shouldBe false
+    }
+  }
 
 
 }
