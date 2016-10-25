@@ -27,7 +27,7 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
-  def nextGen(board: Board): Board = board
+  def nextGen(board: Board): Board = List((false, (0, 0)))
 
 
   "Any cell" should {
@@ -113,4 +113,15 @@ class GameOfLife extends WordSpecLike with Matchers {
       nextGen(initialBoard) shouldBe expectedBoard
     }
   }
+
+  "A 1x1 board which contains a living cell" should {
+    "contain a dead cell in the next gen" in {
+      val initialBoard = List((true, (0, 0)))
+      val expectedBoard = List((false, (0, 0)))
+
+      nextGen(initialBoard) shouldBe expectedBoard
+    }
+  }
+
+
 }
