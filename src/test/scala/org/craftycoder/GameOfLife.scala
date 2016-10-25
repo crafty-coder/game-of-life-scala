@@ -6,7 +6,7 @@ class GameOfLife extends WordSpecLike with Matchers {
 
   def isAliveNextGen(numberOfNeighboursAlive: Int, isAlive: Boolean): Boolean = (numberOfNeighboursAlive, isAlive) match {
     case (2, true) => true
-    case (3, true) => true
+    case (3, _) => true
     case _ => false
   }
 
@@ -37,7 +37,11 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
-
+  "A dead cell" should {
+    "be alive on next generation if it has 3 neighbours alive" in {
+      isAliveNextGen(numberOfNeighboursAlive = 3, isAlive = false) shouldBe true
+    }
+  }
 
 
 }
