@@ -5,7 +5,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 class GameOfLife extends WordSpecLike with Matchers {
 
   type Cell = Boolean
-  type CellWithPosition = (Cell,Int,Int)
+  type Position = (Int, Int)
 
   def isAliveNextGen(numberOfNeighboursAlive: Int, cell: Cell): Boolean = (numberOfNeighboursAlive, cell) match {
     case (2, true) => true
@@ -13,8 +13,8 @@ class GameOfLife extends WordSpecLike with Matchers {
     case _ => false
   }
 
-  def areNeighbours(cellWithPosition1: CellWithPosition, cellWithPosition2: CellWithPosition): Boolean =
-    cellWithPosition1._2 != cellWithPosition2._2 ||  cellWithPosition1._3 != cellWithPosition2._3
+  def areNeighbours(position1: Position, position2: Position): Boolean =
+    position1._1 != position2._1 || position1._2 != position2._2
 
   "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
@@ -52,33 +52,32 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
-  "A cellWithPosition" should {
+  "A position" should {
     "not be neighbour of itself" in {
-      areNeighbours((true, 0, 0), (true, 0, 0)) shouldBe false
+      areNeighbours((0, 0), (0, 0)) shouldBe false
     }
   }
 
-  "A cellWithPosition" should {
+  "A position" should {
     "be neighbour of nearby cellWithPosition" in {
-      areNeighbours((true,1, 1), (true,0, 0)) shouldBe true
-      areNeighbours((true,1, 1), (true,0, 1)) shouldBe true
-      areNeighbours((true,1, 1), (true,0, 2)) shouldBe true
+      areNeighbours((1, 1), (0, 0)) shouldBe true
+      areNeighbours((1, 1), (0, 1)) shouldBe true
+      areNeighbours((1, 1), (0, 2)) shouldBe true
 
-      areNeighbours((true,1, 1), (true,1, 0)) shouldBe true
-      areNeighbours((true,1, 1), (true,1, 2)) shouldBe true
+      areNeighbours((1, 1), (1, 0)) shouldBe true
+      areNeighbours((1, 1), (1, 2)) shouldBe true
 
-      areNeighbours((true,1, 1), (true,2, 0)) shouldBe true
-      areNeighbours((true,1, 1), (true,2, 1)) shouldBe true
-      areNeighbours((true,1, 1), (true,2, 2)) shouldBe true
+      areNeighbours((1, 1), (2, 0)) shouldBe true
+      areNeighbours((1, 1), (2, 1)) shouldBe true
+      areNeighbours((1, 1), (2, 2)) shouldBe true
 
-      areNeighbours((true,1, 0), (true,0, 0)) shouldBe true
-      areNeighbours((true,1, 0), (true,0, 1)) shouldBe true
-      areNeighbours((true,1, 0), (true,1, 1)) shouldBe true
-      areNeighbours((true,1, 0), (true,2, 0)) shouldBe true
-      areNeighbours((true,1, 0), (true,2, 1)) shouldBe true
+      areNeighbours((1, 0), (0, 0)) shouldBe true
+      areNeighbours((1, 0), (0, 1)) shouldBe true
+      areNeighbours((1, 0), (1, 1)) shouldBe true
+      areNeighbours((1, 0), (2, 0)) shouldBe true
+      areNeighbours((1, 0), (2, 1)) shouldBe true
     }
   }
-
 
 
 }
