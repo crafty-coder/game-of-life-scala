@@ -13,7 +13,8 @@ class GameOfLife extends WordSpecLike with Matchers {
     case _ => false
   }
 
-  def isNeighbour(cellWithPosition1: CellWithPosition, cellWithPosition2: CellWithPosition): Boolean = false
+  def areNeighbours(cellWithPosition1: CellWithPosition, cellWithPosition2: CellWithPosition): Boolean =
+    cellWithPosition1._2 != cellWithPosition2._2 ||  cellWithPosition1._3 != cellWithPosition2._3
 
   "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
@@ -51,11 +52,33 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
-  "A cell" should {
+  "A cellWithPosition" should {
     "not be neighbour of itself" in {
-      isNeighbour((true, 0, 0), (true, 0, 0)) shouldBe false
+      areNeighbours((true, 0, 0), (true, 0, 0)) shouldBe false
     }
   }
+
+  "A cellWithPosition" should {
+    "be neighbour of nearby cellWithPosition" in {
+      areNeighbours((true,1, 1), (true,0, 0)) shouldBe true
+      areNeighbours((true,1, 1), (true,0, 1)) shouldBe true
+      areNeighbours((true,1, 1), (true,0, 2)) shouldBe true
+
+      areNeighbours((true,1, 1), (true,1, 0)) shouldBe true
+      areNeighbours((true,1, 1), (true,1, 2)) shouldBe true
+
+      areNeighbours((true,1, 1), (true,2, 0)) shouldBe true
+      areNeighbours((true,1, 1), (true,2, 1)) shouldBe true
+      areNeighbours((true,1, 1), (true,2, 2)) shouldBe true
+
+      areNeighbours((true,1, 0), (true,0, 0)) shouldBe true
+      areNeighbours((true,1, 0), (true,0, 1)) shouldBe true
+      areNeighbours((true,1, 0), (true,1, 1)) shouldBe true
+      areNeighbours((true,1, 0), (true,2, 0)) shouldBe true
+      areNeighbours((true,1, 0), (true,2, 1)) shouldBe true
+    }
+  }
+
 
 
 }
