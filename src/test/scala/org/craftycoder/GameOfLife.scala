@@ -13,8 +13,16 @@ class GameOfLife extends WordSpecLike with Matchers {
     case _ => false
   }
 
-  def areNeighbours(position1: Position, position2: Position): Boolean =
-    position1._1 != position2._1 || position1._2 != position2._2
+  def areNeighbours(p1: Position, p2: Position): Boolean = {
+
+    val dist = (p1._1 - p2._1, p1._2 - p2._2)
+
+    dist match {
+      case (0, 0) => false
+      case (i, j) if Math.abs(i) < 2 && Math.abs(j) < 2 => true
+      case _ => false
+    }
+  }
 
   "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
@@ -59,7 +67,7 @@ class GameOfLife extends WordSpecLike with Matchers {
   }
 
   "A position" should {
-    "be neighbour of nearby cellWithPosition" in {
+    "be neighbour of nearby positions" in {
       areNeighbours((1, 1), (0, 0)) shouldBe true
       areNeighbours((1, 1), (0, 1)) shouldBe true
       areNeighbours((1, 1), (0, 2)) shouldBe true
@@ -79,5 +87,15 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
+  "A position" should {
+    "not be neighbour of positions that are not nearby" in {
+      areNeighbours((1, 1), (1, 3)) shouldBe false
+      areNeighbours((1, 1), (1, -1)) shouldBe false
 
+      areNeighbours((1, 1), (-1, 1)) shouldBe false
+      areNeighbours((1, 1), (3, 1)) shouldBe false
+
+      areNeighbours((1, 1), (3, 3)) shouldBe false
+    }
+  }
 }
