@@ -5,6 +5,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 class GameOfLife extends WordSpecLike with Matchers {
 
   type Cell = Boolean
+  type CellWithPosition = (Cell,Int,Int)
 
   def isAliveNextGen(numberOfNeighboursAlive: Int, cell: Cell): Boolean = (numberOfNeighboursAlive, cell) match {
     case (2, true) => true
@@ -12,7 +13,7 @@ class GameOfLife extends WordSpecLike with Matchers {
     case _ => false
   }
 
-  def isNeighbour(c1: Cell, c2: Cell): Any = false
+  def isNeighbour(cellWithPosition1: CellWithPosition, cellWithPosition2: CellWithPosition): Boolean = false
 
   "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
@@ -52,7 +53,7 @@ class GameOfLife extends WordSpecLike with Matchers {
 
   "A cell" should {
     "not be neighbour of itself" in {
-      isNeighbour(c1 = true, c2 = true) shouldBe false
+      isNeighbour((true, 0, 0), (true, 0, 0)) shouldBe false
     }
   }
 
