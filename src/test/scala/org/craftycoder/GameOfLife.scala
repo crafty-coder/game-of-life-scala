@@ -8,6 +8,7 @@ class GameOfLife extends WordSpecLike with Matchers {
   type Position = (Int, Int)
   type CellBoard = (Cell, Position)
   type Board = List[CellBoard]
+  type GameOfLife = Stream[Board]
 
 
   def isAliveNextGen(numberOfNeighboursAlive: Int, cell: Cell): Boolean = (numberOfNeighboursAlive, cell) match {
@@ -43,7 +44,7 @@ class GameOfLife extends WordSpecLike with Matchers {
 
   def neighbours(position: Position, board: Board): Board = board.filter({ case (_, p) => areNeighbours(position, p) })
 
-  def gameOfLife(seed: Board): Stream[Board] = Stream.cons(seed, gameOfLife(nextGen(seed)))
+  def gameOfLife(seed: Board): GameOfLife = Stream.cons(seed, gameOfLife(nextGen(seed)))
 
   "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
@@ -169,24 +170,24 @@ class GameOfLife extends WordSpecLike with Matchers {
   }
 
   "A game" should {
-    "generate all the next generations" in {
+    "generate all the next boards" in {
 
       val seed = List(
         (false, (0, 0)), (true, (0, 1)), (false, (0, 2)),
         (false, (1, 0)), (true, (1, 1)), (false, (1, 2)),
         (false, (2, 0)), (true, (2, 1)), (false, (2, 2))
       )
-      val generation1 = List(
+      val board1 = List(
         (false, (0, 0)), (false, (0, 1)), (false, (0, 2)),
         (true, (1, 0)), (true, (1, 1)), (true, (1, 2)),
         (false, (2, 0)), (false, (2, 1)), (false, (2, 2))
       )
 
-      val generation2 = seed
+      val board2 = seed
 
       gameOfLife(seed).head shouldBe seed
-      gameOfLife(seed).take(2).last shouldBe generation1
-      gameOfLife(seed).take(3).last shouldBe generation2
+      gameOfLife(seed).take(2).last shouldBe board1
+      gameOfLife(seed).take(3).last shouldBe board2
 
     }
   }
