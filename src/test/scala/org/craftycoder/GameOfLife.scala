@@ -27,7 +27,21 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
-  def nextGen(board: Board): Board = board.map({ case (cell, position) => (false, position) })
+  def nextGen(board: Board): Board = board.map({ case (cell, position) =>
+    (
+      isAliveNextGen(numberOfAliveNeighbours(position, board), cell),
+      position
+      )
+  })
+
+
+  def numberOfAliveCells(subBoard: Board): Int = subBoard.count({ case (cell, _) => cell })
+
+  def numberOfAliveNeighbours(position: Position, board: Board): Int = {
+    numberOfAliveCells(neighbours(position, board))
+  }
+
+  def neighbours(position: Position, board: Board): Board = board.filter({ case (_, p) => areNeighbours(position, p) })
 
 
   "Any cell" should {
@@ -138,5 +152,18 @@ class GameOfLife extends WordSpecLike with Matchers {
     }
   }
 
+  "A 2x2 board which contains a 4 living cells" should {
+    "stay the same in the next gen" in {
+      val initialBoard = List(
+        (true, (0, 0)), (true, (0, 1)),
+        (true, (1, 0)), (true, (1, 1))
+      )
+      val expectedBoard = List(
+        (true, (0, 0)), (true, (0, 1)),
+        (true, (1, 0)), (true, (1, 1))
+      )
 
+      nextGen(initialBoard) shouldBe expectedBoard
+    }
+  }
 }
