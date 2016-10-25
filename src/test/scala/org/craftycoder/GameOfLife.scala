@@ -10,10 +10,13 @@ class GameOfLife extends WordSpecLike with Matchers {
     case _ => false
   }
 
-  "A cell" should {
+  "Any cell" should {
     "not be alive on next generation if it has less than 2 neighbours alive" in {
       isAliveNextGen(numberOfNeighboursAlive = 0, isAlive = true) shouldBe false
       isAliveNextGen(numberOfNeighboursAlive = 1, isAlive = true) shouldBe false
+
+      isAliveNextGen(numberOfNeighboursAlive = 0, isAlive = false) shouldBe false
+      isAliveNextGen(numberOfNeighboursAlive = 1, isAlive = false) shouldBe false
     }
   }
 
